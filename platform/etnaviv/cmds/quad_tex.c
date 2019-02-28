@@ -31,6 +31,8 @@
 #define FAR 1
 #define FLIP 0
 
+#pragma GCC diagnostic ignored "-Wundef"
+
 /* pipe_*_state structs */
 #include "pipe/p_state.h"
 /* pipe_context */

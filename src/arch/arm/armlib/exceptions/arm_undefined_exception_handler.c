@@ -45,4 +45,5 @@ void arm_undefined_exception(struct pt_regs_exception *pt_regs) {
 			pt_regs->regs[6], pt_regs->regs[7],	pt_regs->regs[8],
 			pt_regs->regs[9], pt_regs->regs[10], pt_regs->regs[11],
 			pt_regs->regs[12], pt_regs->prev_lr, pt_regs->spsr);
+	while(1);
 }

@@ -30,6 +30,8 @@
 #define FAR 1
 #define FLIP 0
 
+#pragma GCC diagnostic ignored "-Wundef"
+
 #include "pipe/p_state.h"
 #include "pipe/p_context.h"
 #include "pipe/p_screen.h"

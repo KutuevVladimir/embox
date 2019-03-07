@@ -4,26 +4,26 @@ diff -aur gcc-4.8.1/gcc/config/elfos.h gcc/gcc/config/elfos.h
 @@ -206,8 +206,8 @@
     The definitions say how to change sections to the .init and .fini
     sections.  This is the same for all known svr4 assemblers.  */
- 
+
 -#define INIT_SECTION_ASM_OP	"\t.section\t.init"
 -#define FINI_SECTION_ASM_OP	"\t.section\t.fini"
 +//#define INIT_SECTION_ASM_OP	"\t.section\t.init"
 +//#define FINI_SECTION_ASM_OP	"\t.section\t.fini"
- 
+
  /* Output assembly directive to move to the beginning of current section.  */
  #ifdef HAVE_GAS_SUBSECTION_ORDERING
 diff -aur gcc-4.8.1/libstdc++-v3/configure gcc/libstdc++-v3/configure
 --- gcc-4.8.1/libstdc++-v3/configure	2013-05-24 22:10:37.000000000 +0400
 +++ gcc/libstdc++-v3/configure	2013-10-03 13:22:07.636014123 +0400
 @@ -70713,7 +70713,7 @@
- 
+
      ;;
    *)
 -    as_fn_error "No support for this host/target combination." "$LINENO" 5
 +    #as_fn_error "No support for this host/target combination." "$LINENO" 5
     ;;
  esac
- 
+
 diff -aur gcc-4.8.1/libgcc/Makefile.in gcc/libgcc/Makefile.in
 --- gcc-4.8.1/libgcc/Makefile.in	2013-02-04 23:06:20.000000000 +0400
 +++ gcc/libgcc/Makefile.in	2013-11-08 16:17:02.986366579 +0400
@@ -34,7 +34,7 @@ diff -aur gcc-4.8.1/libgcc/Makefile.in gcc/libgcc/Makefile.in
 -		 -fbuilding-libgcc -fno-stack-protector \
 +		 -fno-stack-protector \
  		 $(INHIBIT_LIBC_CFLAGS)
- 
+
  # Additional options to use when compiling libgcc2.a.
 @@ -396,9 +396,9 @@
  # While emutls.c has nothing to do with EH, it is in LIB2ADDEH*
@@ -46,7 +46,7 @@ diff -aur gcc-4.8.1/libgcc/Makefile.in gcc/libgcc/Makefile.in
 +#LIB2ADDEH += $(srcdir)/emutls.c
 +#LIB2ADDEHSTATIC += $(srcdir)/emutls.c
 +#LIB2ADDEHSHARED += $(srcdir)/emutls.c
- 
+
  # Library members defined in libgcc2.c.
  lib2funcs = _muldi3 _negdi2 _lshrdi3 _ashldi3 _ashrdi3 _cmpdi2 _ucmpdi2	   \
 diff -aur gcc-4.8.1/gcc/config/arm/bpabi.h gcc/gcc/config/arm/bpabi.h
@@ -60,7 +60,7 @@ diff -aur gcc-4.8.1/gcc/config/arm/bpabi.h gcc/gcc/config/arm/bpabi.h
 -#define FINI_ARRAY_SECTION_ASM_OP ARM_EABI_DTORS_SECTION_OP
 +//#define INIT_ARRAY_SECTION_ASM_OP ARM_EABI_CTORS_SECTION_OP
 +//#define FINI_ARRAY_SECTION_ASM_OP ARM_EABI_DTORS_SECTION_OP
- 
+
  /* The legacy _mcount implementation assumes r11 points to a
      4-word APCS frame.  This is generally not true for EABI targets,
 --- gcc-4.8.1/libstdc++-v3/include/ext/concurrence.h	2013-02-03 21:54:05.000000000 +0400
@@ -75,13 +75,13 @@ diff -aur gcc-4.8.1/gcc/config/arm/bpabi.h gcc/gcc/config/arm/bpabi.h
      __gthread_mutex_t _M_mutex;
  #endif
 @@ -129,6 +129,9 @@
- 
+
    public:
-     __mutex() 
+     __mutex()
 +#if __GTHREADS && defined __GTHREAD_MUTEX_INIT
 +      :_M_mutex(__GTHREAD_MUTEX_INIT)
 +#endif
-     { 
+     {
  #if __GTHREADS && ! defined __GTHREAD_MUTEX_INIT
        if (__gthread_active_p())
 @@ -252,7 +255,7 @@
@@ -94,20 +94,20 @@ diff -aur gcc-4.8.1/gcc/config/arm/bpabi.h gcc/gcc/config/arm/bpabi.h
      __gthread_cond_t _M_cond;
  #endif
 @@ -262,6 +265,9 @@
- 
+
    public:
-     __cond() 
+     __cond()
 +#if __GTHREADS && defined __GTHREAD_COND_INIT
 +      : _M_cond(__GTHREAD_COND_INIT)
 +#endif
-     { 
+     {
  #if __GTHREADS && ! defined __GTHREAD_COND_INIT
        if (__gthread_active_p())
-       
+
 --- gcc-4.8.1/libstdc++-v3/include/ext/rope	2013-02-03 21:54:05.000000000 +0400
 +++ gcc/libstdc++-v3/include/ext/rope	2014-04-28 19:19:13.691278363 +0400
 @@ -460,7 +460,7 @@
- 
+
      // Constructor
  #ifdef __GTHREAD_MUTEX_INIT
 -    __gthread_mutex_t _M_ref_count_lock = __GTHREAD_MUTEX_INIT;
@@ -151,14 +151,14 @@ diff -aur gcc-4.8.1/gcc/config/arm/bpabi.h gcc/gcc/config/arm/bpabi.h
 @@ -578,9 +578,9 @@
        /// Type used to represent the difference between two pointers
        typedef typename pointer::difference_type         difference_type;
- 
+
 -      template<typename _Up>
 -        using rebind = typename __gnu_cxx::_Pointer_adapter<
 -	typename pointer_traits<_Storage_policy>::rebind<_Up>>;
 +      //template<typename _Up>
 +      //  using rebind = typename __gnu_cxx::_Pointer_adapter<
 +	//typename pointer_traits<_Storage_policy>::rebind<_Up>>;
- 
+
        static pointer pointer_to(typename pointer::reference __r) noexcept
        { return pointer(std::addressof(__r)); }
 

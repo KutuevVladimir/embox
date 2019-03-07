@@ -1,11 +1,10 @@
 
 PKG_NAME := gcc
-PKG_VER  := 4.8.1
+PKG_VER  := 8.3.0
 
 PKG_SOURCES := http://ftp.gnu.org/gnu/gcc/$(PKG_NAME)-$(PKG_VER)/$(PKG_NAME)-$(PKG_VER).tar.gz
-PKG_MD5     := 74cc12b7afe051ab7d0e00269e49fc9b
-
-PKG_PATCHES := pkg_patch.txt
+PKG_MD5     := 9972f8c24c02ebcb5a342c1b30de69ff
+#PKG_PATCHES := pkg_patch.txt
 
 include $(EXTBLD_LIB)
 
@@ -24,7 +23,7 @@ target_libgcc_cppflags := -DLIBGCC2_HAS_XF_MODE=0 \
 	-DNAME__MAIN -DSYMBOL__MAIN=__embox_register_eh_frame_once
 cppflags = -I$(ROOT_DIR)/third-party/gcc/include \
 	$${EMBOX_IMPORTED_CPPFLAGS} \
-	-I$(PKG_BUILD_DIR)/gcc/include
+	-I$(PKG_BUILD_DIR)/gcc/include -nostdinc #-I/usr/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/8.2.1/include/ -I/usr/lib/gcc/arm-none-eabi/8.3.0/include/
 PKG_BUILD_DIR  := $(BUILD_DIR)/build
 
 $(CONFIGURE) :
@@ -36,6 +35,8 @@ $(CONFIGURE) :
 			--disable-tls \
 			--disable-nls \
 			--disable-libssp \
+			--disable-isl-version-check \
+			--disable-cloog-version-check \
 			--without-newlib \
 			--enable-languages=c,c++ \
 			CC_FOR_TARGET=$${EMBOX_CROSS_COMPILE}gcc \

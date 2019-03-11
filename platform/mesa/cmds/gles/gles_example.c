@@ -188,19 +188,19 @@ static void render_image(void) {
 
     glClearColor(0.1, 0.1, 0.1, 1.);
     glViewport(0, 0, Width, Height);
-
+	if (0) {
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glVertexAttribPointer(pos, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
     glEnableVertexAttribArray(pos);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-
+	}
 
     while(1) {
-	    glClear(GL_COLOR_BUFFER_BIT);
-	    glUseProgram(shader_program);
-	    glDrawArrays(GL_TRIANGLES, 0, 3);
+	    glClear(GL_ALL_ATTRIB_BITS);
+	    if (0) glUseProgram(shader_program);
+	    if (0) glDrawArrays(GL_TRIANGLES, 0, 3);
 	    swap_buffers();
 
     }
@@ -283,7 +283,7 @@ int main(int argc, char **argv) {
 		return 0;
 	}
 
-	{
+	if (0) {
 		int z, s, a;
 		glGetIntegerv(GL_DEPTH_BITS, &z);
 		glGetIntegerv(GL_STENCIL_BITS, &s);

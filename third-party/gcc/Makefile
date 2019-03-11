@@ -38,12 +38,9 @@ $(CONFIGURE) :
 			--disable-isl-version-check \
 			--disable-cloog-version-check \
 			--without-newlib \
+			--disable-libgomp \
+			--disable-libmudflap \
 			--enable-languages=c,c++ \
-			CC_FOR_TARGET=$${EMBOX_CROSS_COMPILE}gcc \
-			CXX_FOR_TARGET=$${EMBOX_CROSS_COMPILE}g++ \
-			CFLAGS_FOR_TARGET="$(cppflags) $(target_libgcc_cppflags) $${EMBOX_IMPORTED_CFLAGS}" \
-			CXXFLAGS_FOR_TARGET="$(cppflags) $${EMBOX_IMPORTED_CXXFLAGS} -fpermissive" \
-			LDFLAGS_FOR_TARGET="$${EMBOX_IMPORTED_LDFLAGS}"; \
 	)
 	touch $@
 
@@ -56,23 +53,8 @@ $(BUILD) :
 			RAW_CXX_FOR_TARGET=$${EMBOX_CROSS_COMPILE}g++ \
 			AR_FOR_TARGET=ar \
 			RANLIB_FOR_TARGET=ranlib \
-         	TARGET-libiberty="LINKER=true CC=true AR=true RANLIB=touch all" \
          	TARGET-zlib="LINKER=true CC=true AR=true RANLIB=touch all" \
-         	TARGET-libbacktrace="LINKER=true CC=true AR=touch \
-				LINK=\"mkdir -p .libs && true\" \
-				LIBS=\"&& touch .libs/libbacktrace.a\" all" \
-         	TARGET-libcpp="LINKER=true CC=true CXX=true POSTCOMPILE=true \
-				AR=true RANLIB=touch all" \
-         	TARGET-libdecnumber="LINKER=true CC=true AR=true RANLIB=touch all" \
-         	TARGET-fixincludes="LINKER=true CC=true AR=true all" \
-			TARGET-lto-plugin="CC=true LIBTOOL=true all" \
-         	TARGET-gcc="LINKER=true CC=true CXX=true \
-				GCC_FOR_TARGET=$${EMBOX_CROSS_COMPILE}gcc \
-				AR=true RANLIB=true libgcc-support stmp-int-hdrs" \
-         	TARGET-target-libgcc="PICFLAG= EXTRA_PARTS= all" \
-         	TARGET-target-libstdc++-v3="SUBDIRS=\"include libsupc++\" \
-				all-recursive" \
-         	all-target-libgcc all-target-libstdc++-v3; \
+         	all-gcc all-target-libgcc all-target-libstdc++-v3; \
 	)
 	touch $@
 
